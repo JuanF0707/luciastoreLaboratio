@@ -43,44 +43,7 @@ public class Customer extends Person{
 
     // Métodos Propios
 
-    public Customer createUser( Customer customer) {
 
-
-        System.out.println("Ingrese el id del cliente");
-        int id = sc.nextInt();
-        sc.nextLine();
-        customer.id = id;
-
-        System.out.println("Ingrese el nombre del cliente");
-        String name = sc.nextLine();
-        customer.name = name;
-
-        System.out.println("INgrese el apellido");
-        String lastName = sc.nextLine();
-        customer.lastName = lastName;
-
-        System.out.println("ingrese el email");
-        String email = sc.nextLine();
-        customer.email = email;
-
-        System.out.println("Ingrese el password ");
-        String password = sc.nextLine();
-        customer.password = password;
-
-        System.out.println("Estado Cliente ");
-        boolean state = sc.nextBoolean();
-        customer.status = state;
-
-        System.out.println("Cupo");
-        double quote = sc.nextDouble();
-        customer.quote = quote;
-
-        System.out.println("Tipo de Cliente");
-        String customerType = sc.nextLine();
-        customer.customerType = customerType;
-
-        return customer;
-    }
 
     @Override
     public Person updatePerson(Person person) {
