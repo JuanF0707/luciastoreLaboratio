@@ -50,6 +50,7 @@ public class MenuApp {
                     break;
                 case 2:
                     System.out.println("Iniciar Sesion");
+                    profileSelector("admin");
                     break;
                 case 3:
                     System.out.println("Saliendo de la aplicacion");
@@ -61,5 +62,86 @@ public class MenuApp {
         }
 
     }
+
+
+    public void profileSelector(String profile){
+
+        if(profile.equals("admin")){
+            showMenuAdmin();
+        }else if(profile.equals("customer")){
+            showMenuCustomer();
+        }
+    }
+
+
+    public void showMenuAdmin(){
+
+        while (true){
+            System.out.println("Menu Administrador");
+            System.out.println("1. Gestionar Productos 2. Gestionar Categorias 3. Gestionar Clientes 4. Salir");
+            int option = sc.nextInt();
+            sc.nextLine();
+
+            switch (option){
+                case 1:
+                    System.out.println("Gestionar Productos");
+                    break;
+                case 2:
+                    System.out.println("Gestionar Categorias");
+                    break;
+                case 3:
+                    System.out.println("Gestionar Clientes");
+                    customerMenuAdmin();
+                    break;
+                case 4:
+                    System.out.println("Saliendo del menu de administrador");
+                    return;
+                default:
+                    System.out.println("Opcion no valida, por favor seleccione una opcion valida");
+            }
+        }
+
+    }
+
+
+    public void showMenuCustomer(){
+
+    }
+
+
+    public void customerMenuAdmin(){
+
+        System.out.println("Menu Cliente");
+        while (true) {
+
+            System.out.println("1. Crear Perfil Cliente 2. Ver perfil por id 3. Modifica perfil 4. Ver perfiles 5. eliminar Perfil");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case 1:
+                    System.out.println("Crear perfil");
+                    customerView.createCustomer();
+                    break;
+                case 2:
+                    System.out.println("Ver perfil por id");
+                    break;
+                case 3:
+                    System.out.println("Modificar perfil");
+                    break;
+                case 4:
+                    System.out.println("Ver perfiles");
+                    break;
+                case 5:
+                    System.out.println("Eliminar perfil");
+                    break;
+                default:
+                    System.out.println("Opcion no valida, por favor seleccione una opcion valida");
+            }
+        }
+    }
+
+
+
 
 }

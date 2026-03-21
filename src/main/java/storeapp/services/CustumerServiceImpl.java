@@ -1,6 +1,7 @@
 package storeapp.services;
 
 import storeapp.domain.Customer;
+import storeapp.repository.CustomerRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +11,11 @@ public class CustumerServiceImpl implements CustumerService {
 
     Scanner sc = new Scanner(System.in);
 
+    //Ahora vamos a comunicar las clases , para eso vamos a crear una instancia de la capa inmediatamente anterior
+    private final CustomerRepository customerRepository;
 
-
-    public CustumerServiceImpl(Customer customer){
+    public CustumerServiceImpl(Customer customer, CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
 
     }
 
@@ -50,7 +53,9 @@ public class CustumerServiceImpl implements CustumerService {
         System.out.println("Tipo de Cliente");
         String customerType = sc.nextLine();
         customer.setCustomerType(customerType);
-        return customer;
+
+
+        return customerRepository.saveCustomer(customer);
     }
 
     @Override
@@ -63,18 +68,13 @@ public class CustumerServiceImpl implements CustumerService {
         return Optional.empty();
     }
 
-    @Override
-    public List<Customer> getAllCustomers() {
-        return List.of();
-    }
 
     @Override
     public Customer updateCustomer(Customer customer) {
         return null;
     }
 
-    @Override
-    public void deleteCustomer(int id) {
 
-    }
+
+
 }
