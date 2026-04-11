@@ -21,26 +21,20 @@ public class CustumerServiceImpl implements CustumerService {
 
     @Override
     public Customer createCustomer(Customer customer) {
-
-       try {
-           System.out.println("Ingrese el id del cliente");
-           int id = sc.nextInt();
-           sc.nextLine();
-           customer.setId(id);
-       }catch (Exception e){
-           System.out.println("Ingrese un numero entero");
-       }
-
+        System.out.println("Ingrese el id del cliente");
+        int id = sc.nextInt();
+        sc.nextLine();
+        customer.setId(id);
 
         System.out.println("Ingrese el nombre del cliente");
         String name = sc.nextLine();
         customer.setName(name);
 
-        System.out.println("Ingrese el apellido");
+        System.out.println("INgrese el apellido");
         String lastName = sc.nextLine();
         customer.setLastName(lastName);
 
-        System.out.println("Ingrese el email");
+        System.out.println("ingrese el email");
         String email = sc.nextLine();
         customer.setEmail(email);
 
