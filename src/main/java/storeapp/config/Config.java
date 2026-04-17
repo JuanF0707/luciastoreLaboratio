@@ -12,9 +12,14 @@ import storeapp.view.CategoryView;
 import storeapp.view.CustomerView;
 import storeapp.view.ProductView;
 
+import java.util.Scanner;
+
+
 public class Config {
 
     public static MenuApp createMenuApp() {
+
+        Scanner sc = new Scanner(System.in);
 
         // esto es un patron Simple Factory, se encarga de crear los objetos necesarios para la aplicacion, y devolver un objeto MenuApp con todos los objetos necesarios para la aplicacion,
         // esto es para evitar tener que crear los objetos en el main, y tener
@@ -32,7 +37,7 @@ public class Config {
         // Agrego esto
         CategoryRepository categoryRepository = new CategoryRepository();
         CategoryService categoryService = new CategoryServicesImpl(categoryRepository);
-        CategoryView categoryView = new CategoryView(categoryService);
+        CategoryView categoryView = new CategoryView(sc, categoryService);
 
         // Agrego Productos
         ProductRepository productRepository = new ProductRepository();

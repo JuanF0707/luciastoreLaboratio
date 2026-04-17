@@ -259,14 +259,21 @@ public class MenuApp {
             switch (option) {
                 case 1:
                     categoryView.createCategory();
+                    break;
                 case 2:
                     categoryView.getAllCategories();
+                    System.out.println("Presione ENTER para regresar");
+                    sc.nextLine();
+                    break;
                 case 3:
                     categoryView.getCategoryById();
+                    break;
                 case 4:
                     categoryView.updateCategory();
+                    break;
                 case 5:
                     categoryView.deleteCategory();
+                    break;
                 case 6:
                     System.out.println("Saliendo del Menú Categorias...");
                     return;

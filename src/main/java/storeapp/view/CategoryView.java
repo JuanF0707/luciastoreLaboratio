@@ -7,11 +7,13 @@ import java.util.Scanner;
 
 public class CategoryView {
 
-    Scanner sc = new Scanner(System.in);
+    // Scanner sc = new Scanner(System.in);
+    private final Scanner sc;
     private final CategoryService categoryService;
 
-    public CategoryView(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public CategoryView(Scanner sc, CategoryService categoryService) {
+    this.sc = sc;
+    this.categoryService = categoryService;
     }
 
     public void createCategory() {
@@ -19,7 +21,7 @@ public class CategoryView {
         System.out.println("Categoria creada: " + category.getIdCategory() + " - " + category.getDescription());
     }
 
-    public void getAllCategories() {
+    public void getAllCategories(){
         System.out.println("--- Listado de Categorias ---");
         categoryService.getAllCategories().forEach(c ->
                 System.out.println(c.getIdCategory() + " | " + c.getDescription() + " | Estado: " + c.isState())
@@ -27,9 +29,13 @@ public class CategoryView {
     }
 
     public void getCategoryById() {
-        System.out.println("Ingrese el id de la categoria:");
+        System.out.println("Ingrese el id de la categoria: (0. Salir)");
         int id = sc.nextInt();
         sc.nextLine();
+        if (id == 0){
+            System.out.println("Regresando...");
+            return;
+        }
         categoryService.getCategoryById(id)
                 .ifPresentOrElse(
                         c -> System.out.println(c.getIdCategory() + " | " + c.getDescription() + " | Estado: " + c.isState()),
@@ -38,9 +44,13 @@ public class CategoryView {
     }
 
     public void updateCategory() {
-        System.out.println("Ingrese el id de la categoria a modificar:");
+        System.out.println("Ingrese el id de la categoria a modificar: (0. Salir)");
         int id = sc.nextInt();
         sc.nextLine();
+        if (id == 0){
+            System.out.println("Regresando...");
+            return;
+        }
         categoryService.getCategoryById(id)
                 .ifPresentOrElse(
                         c -> {
