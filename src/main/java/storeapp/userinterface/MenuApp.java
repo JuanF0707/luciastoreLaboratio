@@ -192,6 +192,7 @@ public class MenuApp {
                     break;
                 case 4:
                     System.out.println("Saliendo del Menu Cliente...");
+                    return;
                 default:
                     System.out.println("Opcion no valida, por favor seleccione una opcion valida");
             }
@@ -234,6 +235,7 @@ public class MenuApp {
                     break;
                 case 6:
                     System.out.println("Saliendo del menu de Clientes...");
+                    return;
                 default:
                     System.out.println("Opcion no valida, por favor seleccione una opcion valida");
             }

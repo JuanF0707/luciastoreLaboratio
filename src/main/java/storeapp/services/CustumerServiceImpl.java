@@ -30,11 +30,11 @@ public class CustumerServiceImpl implements CustumerService {
         String name = sc.nextLine();
         customer.setName(name);
 
-        System.out.println("Ingrese el apellido");
+        System.out.println("INgrese el apellido");
         String lastName = sc.nextLine();
         customer.setLastName(lastName);
 
-        System.out.println("Ingrese el email");
+        System.out.println("ingrese el email");
         String email = sc.nextLine();
         customer.setEmail(email);
 
