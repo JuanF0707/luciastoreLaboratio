@@ -2,6 +2,7 @@ package storeapp.utils;
 
 import storeapp.domain.Customer;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CustomerFormValidation {
@@ -18,7 +19,7 @@ public class CustomerFormValidation {
                 sc.nextLine();
                 validInput = true;
                 customer.setId(id);
-                continue;
+
             } catch (Exception e){
                 System.out.println("Error al ingresar el id del cliente, por favor ingrese un numero entero");
                 validInput = false;
@@ -37,7 +38,7 @@ public class CustomerFormValidation {
                 sc.nextLine();
                 return value;
 
-            }catch (Exception e){
+            }catch (InputMismatchException e){
                 System.out.println("Error al ingresar el valor, este debe ser un numero entero");
                 sc.nextLine();
             }
@@ -54,7 +55,7 @@ public class CustomerFormValidation {
                 sc.nextLine();
                 return value;
 
-            }catch (Exception e){
+            }catch (InputMismatchException e){
                 System.out.println("Error al ingresar el valor, este debe ser un numero decimal");
                 sc.nextLine();
             }
@@ -71,28 +72,27 @@ public class CustomerFormValidation {
                 sc.nextLine();
                 return value;
 
-            }catch (Exception e){
+            }catch (InputMismatchException e){
                 System.out.println("Error al ingresar el valor, este debe ser un booleano (true/false)");
                 sc.nextLine();
             }
         }
     }
 
-    public static String validateString(String prompt) {
+    public static String validateString(String prompt) throws InputMismatchException {
 
-        while(true){
-            try{
+        while(true) {
 
-                System.out.println(prompt);
-                String value = sc.nextLine();
-                sc.nextLine();
+
+            System.out.println(prompt);
+            String value = sc.nextLine().trim();
+            if(!value.isEmpty()){
                 return value;
-
-            }catch (Exception e){
-                System.out.println("Error al ingresar el valor, este debe ser carácteres");
-                sc.nextLine();
             }
+            sc.nextLine();
+            throw new InputMismatchException("Error al ingresar el valor , el campo no debe estar vacio");
         }
+
     }
 
 

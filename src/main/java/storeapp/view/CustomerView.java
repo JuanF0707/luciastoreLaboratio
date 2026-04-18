@@ -3,20 +3,20 @@ package storeapp.view;
 import storeapp.domain.Customer;
 import storeapp.services.CustumerService;
 import storeapp.services.CustumerServiceImpl;
+import storeapp.utils.CustomerFormValidation;
 
 public class CustomerView {
 
     private final CustumerService customerService;
-    private final Customer customer;
 
-    public CustomerView(CustumerService customerService, Customer customer){
+
+    public CustomerView(CustumerService customerService){
         this.customerService = customerService;
-        this.customer = customer;
     }
 
     public void createCustomer(){
 
-        customerService.createCustomer(customer);
+        customerService.createCustomer();
 
 
     }
@@ -24,7 +24,18 @@ public class CustomerView {
 
     public void getCustumerById(int id){
 
-        customerService.getCustomerById(id).ifPresent(System.out::println);
+        customerService.getCustomerById(id);
+    }
+
+
+    public void updateCustumer(){
+        System.out.println("Estoy en la Vista");
+        customerService.updateCustomer(CustomerFormValidation.validateInt("Ingrese el ID"));
+
+    }
+
+    public void deleteCustomer(){
+        customerService.deleteCustomer(CustomerFormValidation.validateInt("Ingrese el id del CLiente a eliminar"));
     }
 
 

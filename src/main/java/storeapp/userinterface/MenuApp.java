@@ -2,6 +2,7 @@ package storeapp.userinterface;
 
 import storeapp.domain.Customer;
 import storeapp.services.CustumerServiceImpl;
+import storeapp.utils.CustomerFormValidation;
 import storeapp.view.AdminView;
 import storeapp.view.CustomerView;
 
@@ -126,6 +127,7 @@ public class MenuApp {
                     break;
                 case 3:
                     System.out.println("Modificar mi perfil");
+                    customerView.updateCustumer();
                     break;
                 default:
                     System.out.println("Opcion no valida, por favor seleccione una opcion valida");
@@ -158,6 +160,7 @@ public class MenuApp {
                     break;
                 case 3:
                     System.out.println("Modificar perfil");
+                    customerView.updateCustumer();
                     break;
                 case 4:
                     System.out.println("Ver perfiles");
@@ -165,6 +168,7 @@ public class MenuApp {
                     break;
                 case 5:
                     System.out.println("Eliminar perfil");
+                    customerView.deleteCustomer();
                     break;
                 default:
                     System.out.println("Opcion no valida, por favor seleccione una opcion valida");

@@ -19,11 +19,11 @@ public class Config {
         // todo el codigo de creacion de objetos en un solo lugar, y asi poder cambiar la implementacion de los objetos sin tener que cambiar el codigo del main,
         //  por ejemplo si queremos cambiar la implementacion de CustomerServiceImpl por otra implementacion, solo tenemos que cambiar el codigo de esta clase,
         //  y no tenemos que cambiar el codigo del main, esto es una buena practica de programacion, ya que nos permite tener un codigo mas limpio y mantenible.
-        Customer customer = new Customer();
+
         Admin admin = new Admin();
         CustomerRepository customerRepository = new CustomerRepository();
-        CustumerService customerService = new CustumerServiceImpl(customer, customerRepository);
-        CustomerView customerView = new CustomerView( customerService, customer);
+        CustumerService customerService = new CustumerServiceImpl(customerRepository);
+        CustomerView customerView = new CustomerView(customerService);
         AdminServiceImpl adminService = new AdminServiceImpl(admin, customerRepository);
         AdminView adminView = new AdminView(adminService, admin);
 
