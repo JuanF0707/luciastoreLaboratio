@@ -50,8 +50,21 @@ public class CustomerRepository {
         }
     }
 
-    public void findCustomerByEmail(){
-
+    /**
+     * Busca un cliente por su email
+     * @param email Email del cliente a buscar
+     * @return Optional con el cliente si existe, vacío en caso contrario
+     */
+    public Optional<Customer> findCustomerByEmail(String email){
+        if (email == null || email.trim().isEmpty()) {
+            return Optional.empty();
+        }
+        for (Customer customer : customers) {
+            if (customer.getEmail().equalsIgnoreCase(email)) {
+                return Optional.of(customer);
+            }
+        }
+        return Optional.empty();
     }
 
     public void updateCustomer(){

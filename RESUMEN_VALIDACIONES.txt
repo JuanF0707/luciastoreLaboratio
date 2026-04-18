@@ -1,0 +1,284 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║           SISTEMA DE VALIDACIONES - RESUMEN DE IMPLEMENTACIÓN                 ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+📦 ARCHIVOS CREADOS (5 nuevos):
+═══════════════════════════════════════════════════════════════════════════════
+
+1️⃣  storeapp/exceptions/DuplicateIdException.java
+    └─ Excepción para ID duplicados
+    └─ Lanzada cuando: Un cliente/categoría/producto con ese ID ya existe
+    └─ Hereda de: RuntimeException
+
+2️⃣  storeapp/exceptions/DuplicateEmailException.java
+    └─ Excepción para email duplicados
+    └─ Lanzada cuando: Un cliente con ese email ya existe
+    └─ Hereda de: RuntimeException
+
+3️⃣  storeapp/exceptions/ValidationException.java
+    └─ Excepción genérica de validación
+    └─ Lanzada cuando: Datos inválidos, campos vacíos, formatos incorrectos
+    └─ Hereda de: RuntimeException
+
+4️⃣  storeapp/utils/EntityValidator.java
+    └─ Clase UTILITARIA centralizada de validaciones
+    └─ Contiene: 15 métodos estáticos de validación
+    └─ Valida: Email, nombres, precios, stocks, IDs, contraseñas, etc.
+    └─ Métodos principales:
+       • isValidEmail()          → Valida formato email
+       • isValidPrice()          → Valida precio > 0
+       • isValidStock()          → Valida stock >= 0
+       • isValidPassword()       → Valida contraseña >= 6 caracteres
+       • isValidName()           → Valida nombre >= 2 caracteres
+       • validateNotEmpty()      → Lanza excepción si está vacío
+       • validatePositivePrice() → Lanza excepción si precio <= 0
+
+5️⃣  storeapp/utils/DuplicateChecker.java
+    └─ Clase UTILITARIA para detección de duplicados
+    └─ Contiene: 8 métodos estáticos de verificación
+    └─ Métodos principales:
+       • checkCustomerDuplicateById()      → Verifica cliente ID único
+       • checkCustomerDuplicateByEmail()   → Verifica email cliente único
+       • checkCategoryDuplicateById()      → Verifica categoría ID único
+       • checkProductDuplicateById()       → Verifica producto ID único
+       • customerExists()                  → ¿Existe cliente?
+       • categoryExists()                  → ¿Existe categoría?
+       • productExists()                   → ¿Existe producto?
+
+📝 ARCHIVOS MODIFICADOS (4):
+═══════════════════════════════════════════════════════════════════════════════
+
+1. storeapp/repository/CustomerRepository.java
+   └─ ✅ Agregado: findCustomerByEmail(String email)
+   └─ Ahora puedes buscar clientes por email
+   └─ Retorna: Optional<Customer>
+
+2. storeapp/services/CustumerServiceImpl.java
+   └─ ✅ createCustomer() - Validaciones COMPLETAS
+      • ID positivo + no duplicado ✓
+      • Nombre válido (>= 2 caracteres) ✓
+      • Email formato válido + no duplicado ✓
+      • Contraseña >= 6 caracteres ✓
+      • Cupo > 0 ✓
+   └─ ✅ getCustomerByEmail() - Implementado correctamente
+      • Valida email y busca
+   └─ ✅ Manejo de excepciones con mensajes claros
+      • DuplicateIdException
+      • DuplicateEmailException
+      • ValidationException
+
+3. storeapp/services/CategoryServicesImpl.java
+   └─ ✅ createCategory() - Validaciones COMPLETAS
+      • ID positivo + no duplicado ✓
+      • Descripción no vacía ✓
+   └─ ✅ updateCategory() - Validaciones mejoradas
+      • Descripción no vacía ✓
+      • Verifica existencia antes de actualizar ✓
+
+4. storeapp/services/ProductServiceImpl.java
+   └─ ✅ createProduct() - Validaciones COMPLETAS
+      • ID positivo + no duplicado ✓
+      • Descripción no vacía ✓
+      • Precio > 0 ✓
+      • Stock >= 0 ✓
+   └─ ✅ updateProduct() - Validaciones mejoradas
+      • Descripción no vacía ✓
+      • Precio válido ✓
+      • Stock válido ✓
+      • Verifica existencia antes de actualizar ✓
+
+═════════════════════════════════════════════════════════════════════════════════
+
+🎯 VALIDACIONES IMPLEMENTADAS POR TIPO:
+═════════════════════════════════════════════════════════════════════════════════
+
+📌 CLIENTES - VALIDACIONES AL CREAR:
+   ✅ ID del cliente: Positivo, no duplicado
+   ✅ Nombre: No vacío, >= 2 caracteres
+   ✅ Apellido: No vacío
+   ✅ Email: Formato válido, no duplicado ← NUEVA
+   ✅ Contraseña: >= 6 caracteres
+   ✅ Cupo: Mayor a 0
+   ✅ Tipo cliente: No vacío
+
+📌 CATEGORÍAS - VALIDACIONES AL CREAR:
+   ✅ ID categoría: Positivo, no duplicado ← NUEVA
+   ✅ Descripción: No vacía
+
+📌 PRODUCTOS - VALIDACIONES AL CREAR:
+   ✅ ID producto: Positivo, no duplicado ← NUEVA
+   ✅ Descripción: No vacía
+   ✅ Precio: Mayor a 0
+   ✅ Stock: No negativo (puede ser 0)
+
+═════════════════════════════════════════════════════════════════════════════════
+
+🔄 FLUJO DE VALIDACIÓN - EJEMPLO: CREAR CLIENTE
+
+┌─────────────────────────────────────────────────────────────────┐
+│ Usuario Ingresa Datos                                           │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 1. ID Positivo?                                                 │
+│    EntityValidator.validatePositiveId()                         │
+│    ❌ Si es negativo → ValidationException                      │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 2. ID NO Duplicado?                                             │
+│    DuplicateChecker.checkCustomerDuplicateById()                │
+│    ❌ Si existe → DuplicateIdException                          │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 3. Nombre Válido? (No vacío, >= 2 caracteres)                  │
+│    EntityValidator.validateName()                               │
+│    ❌ Si no cumple → ValidationException                        │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 4. Email Formato Válido?                                        │
+│    EntityValidator.validateEmailFormat()                        │
+│    ❌ Si formato inválido → ValidationException                 │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 5. Email NO Duplicado?                                          │
+│    DuplicateChecker.checkCustomerDuplicateByEmail()             │
+│    ❌ Si existe → DuplicateEmailException                       │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 6. Contraseña >= 6 caracteres?                                  │
+│    EntityValidator.validatePassword()                           │
+│    ❌ Si menor → ValidationException                            │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 7. Cupo Mayor a 0?                                              │
+│    EntityValidator.validatePositivePrice()                      │
+│    ❌ Si <= 0 → ValidationException                             │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ ✅ TODAS LAS VALIDACIONES PASARON                               │
+│ → Guardar en repository                                         │
+└────────────────┬────────────────────────────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ Mensaje: "✓ Cliente registrado exitosamente con ID: X"         │
+└─────────────────────────────────────────────────────────────────┘
+
+Si alguna validación FALLA:
+┌─────────────────────────────────────────────────────────────────┐
+│ ❌ Se lanza Exception (Duplicate* o ValidationException)        │
+│ ❌ Se captura en catch                                          │
+│ ❌ Se muestra mensaje al usuario: "✗ Error: [mensaje]"         │
+│ ❌ NO se guarda el registro                                     │
+│ ❌ Vuelve al inicio, usuario reinicia proceso                   │
+└─────────────────────────────────────────────────────────────────┘
+
+═════════════════════════════════════════════════════════════════════════════════
+
+💡 EJEMPLOS DE MENSAJES DE ERROR:
+
+┌─ ID DUPLICADO ─────────────────────────────────────────────────┐
+│ ✗ Error: Ya existe un cliente registrado con el ID: 1          │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ EMAIL DUPLICADO ──────────────────────────────────────────────┐
+│ ✗ Error: Ya existe un cliente registrado con el email: test@... │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ EMAIL INVÁLIDO ───────────────────────────────────────────────┐
+│ ✗ Error de validación: El email ingresado no tiene un ...       │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ CONTRASEÑA CORTA ─────────────────────────────────────────────┐
+│ ✗ Error de validación: La contraseña debe tener mínimo ...      │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ PRECIO NEGATIVO ──────────────────────────────────────────────┐
+│ ✗ Error de validación: El precio debe ser un valor positivo ... │
+└────────────────────────────────────────────────────────────────┘
+
+┌─ CAMPO VACÍO ──────────────────────────────────────────────────┐
+│ ✗ Error de validación: El campo 'nombre del cliente' no puede.. │
+└────────────────────────────────────────────────────────────────┘
+
+═════════════════════════════════════════════════════════════════════════════════
+
+🏗️ ARQUITECTURA - CÓMO FUNCIONA:
+
+USER (MenuApp)
+    ↓
+    ↓ Ingresa datos
+    ↓
+SERVICE (CustumerServiceImpl, CategoryServicesImpl, ProductServiceImpl)
+    ├─ Llamada a EntityValidator (validar campos)
+    │   └─ Lanza ValidationException si hay errores
+    │
+    ├─ Llamada a DuplicateChecker (verificar duplicados)
+    │   ├─ Lanza DuplicateIdException si ID existe
+    │   └─ Lanza DuplicateEmailException si email existe
+    │
+    └─ Si todo OK → REPOSITORY (guardar datos)
+                        └─ CustomerRepository/CategoryRepository/ProductRepository
+                            └─ ArrayList (en memoria)
+
+CATCH BLOCKS:
+    ├─ catch(DuplicateIdException)    → Mensaje específico ID duplicado
+    ├─ catch(DuplicateEmailException) → Mensaje específico email duplicado
+    ├─ catch(ValidationException)     → Mensaje específico de validación
+    └─ catch(Exception)               → Error genérico inesperado
+
+═════════════════════════════════════════════════════════════════════════════════
+
+✨ BENEFICIOS:
+
+✅ Datos Seguros: No habrá duplicados de clientes por ID o email
+✅ Integridad: Todos los datos cumplen reglas específicas
+✅ Centralizadas: Fácil de mantener, todas en un lugar
+✅ Reutilizables: Los mismos validadores en create, update, etc.
+✅ Claras: Mensajes específicos para cada tipo de error
+✅ Escalables: Fácil agregar nuevas validaciones
+✅ Profesionales: Excepciones personalizadas para cada caso
+✅ Listas para BD: Sistema preparado para migración a base de datos
+
+═════════════════════════════════════════════════════════════════════════════════
+
+📚 DOCUMENTACIÓN INCLUIDA:
+
+1. EXPLICACION_VALIDACIONES.md
+   └─ Guía completa en español
+   └─ Ejemplos de uso
+   └─ Explicación de cada validación
+
+2. ExceptionHandlerExample.java
+   └─ Ejemplos de cómo manejar las excepciones
+   └─ Patrones de try-catch recomendados
+   └─ Métodos helper para logging
+
+═════════════════════════════════════════════════════════════════════════════════
+
+🚀 PRÓXIMOS PASOS SUGERIDOS:
+
+1. Probar la aplicación creando clientes/categorías/productos
+2. Intentar crear duplicados para ver los mensajes de error
+3. Intentar ingresar datos inválidos para ver las validaciones
+4. Agregar más validaciones según necesidades específicas
+5. Considerar agregar base de datos SQL en el futuro
+6. Implementar logging profesional con Log4j o SLF4J
+
+═════════════════════════════════════════════════════════════════════════════════
+

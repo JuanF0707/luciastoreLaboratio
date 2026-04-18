@@ -4,6 +4,10 @@ package storeapp.services;
 import storeapp.domain.Product;
 import storeapp.repository.CategoryRepository;
 import storeapp.repository.ProductRepository;
+import storeapp.utils.DuplicateChecker;
+import storeapp.utils.EntityValidator;
+import storeapp.exceptions.DuplicateIdException;
+import storeapp.exceptions.ValidationException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,41 +27,70 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        System.out.println("Ingrese el id del producto:");
-        int id = sc.nextInt();
-        sc.nextLine();
-        product.setIdProduct(id);
+        try {
+            System.out.println("Ingrese el id del producto:");
+            int id = sc.nextInt();
+            sc.nextLine();
+            
+            // Validar que el ID sea positivo
+            EntityValidator.validatePositiveId(id, "ID del producto");
+            
+            // Verificar si el ID ya existe
+            DuplicateChecker.checkProductDuplicateById(productRepository.findAllProducts(), id);
+            product.setIdProduct(id);
 
-        System.out.println("Ingrese la descripcion del producto:");
-        String description = sc.nextLine();
-        product.setDescription(description);
+            System.out.println("Ingrese la descripcion del producto:");
+            String description = sc.nextLine();
+            
+            // Validar que la descripción no esté vacía
+            EntityValidator.validateNotEmpty(description, "descripción del producto");
+            product.setDescription(description);
 
-        System.out.println("Ingrese el precio del producto:");
-        double price = sc.nextDouble();
-        product.setPrice(price);
+            System.out.println("Ingrese el precio del producto:");
+            double price = sc.nextDouble();
+            
+            // Validar que el precio sea válido
+            EntityValidator.validatePositivePrice(price);
+            product.setPrice(price);
 
-        System.out.println("Ingrese el stock del producto:");
-        int stock = sc.nextInt();
-        sc.nextLine();
-        product.setStock(stock);
+            System.out.println("Ingrese el stock del producto:");
+            int stock = sc.nextInt();
+            sc.nextLine();
+            
+            // Validar que el stock sea válido
+            EntityValidator.validateNonNegativeStock(stock);
+            product.setStock(stock);
 
-        boolean state = stateSelector.ProductState();
-        product.setState(state);
+            boolean state = stateSelector.ProductState();
+            product.setState(state);
 
-        System.out.println("--- Categorias disponibles ---");
-        categoryRepository.findAllCategories().forEach(c ->
-                System.out.println(c.getIdCategory() + " | " + c.getDescription())
-        );
-        System.out.println("Ingrese el id de la categoria:");
-        int categoryId = sc.nextInt();
-        sc.nextLine();
-        categoryRepository.findById(categoryId)
-                .ifPresentOrElse(
-                        product::setCategory,
-                        () -> System.out.println("Categoria no encontrada, se asignara sin categoria")
-                );
+            System.out.println("--- Categorias disponibles ---");
+            categoryRepository.findAllCategories().forEach(c ->
+                    System.out.println(c.getIdCategory() + " | " + c.getDescription())
+            );
+            System.out.println("Ingrese el id de la categoria:");
+            int categoryId = sc.nextInt();
+            sc.nextLine();
+            categoryRepository.findById(categoryId)
+                    .ifPresentOrElse(
+                            product::setCategory,
+                            () -> System.out.println("Categoria no encontrada, se asignara sin categoria")
+                    );
 
-        return productRepository.saveProduct(product);
+            Product savedProduct = productRepository.saveProduct(product);
+            System.out.println("✓ Producto registrado exitosamente con ID: " + id);
+            return savedProduct;
+            
+        } catch (DuplicateIdException e) {
+            System.out.println("✗ Error: " + e.getMessage());
+            throw e;
+        } catch (ValidationException e) {
+            System.out.println("✗ Error de validación: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.out.println("✗ Error inesperado: " + e.getMessage());
+            throw new ValidationException("Error al crear el producto: " + e.getMessage());
+        }
     }
 
     @Override
@@ -72,24 +105,44 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
-        System.out.println("Ingrese la nueva descripcion:");
-        String description = sc.nextLine();
-        product.setDescription(description);
+        try {
+            System.out.println("Ingrese la nueva descripcion:");
+            String description = sc.nextLine();
+            
+            // Validar que la descripción no esté vacía
+            EntityValidator.validateNotEmpty(description, "descripción");
+            product.setDescription(description);
 
-        System.out.println("Ingrese el nuevo precio:");
-        double price = sc.nextDouble();
-        product.setPrice(price);
+            System.out.println("Ingrese el nuevo precio:");
+            double price = sc.nextDouble();
+            
+            // Validar que el precio sea válido
+            EntityValidator.validatePositivePrice(price);
+            product.setPrice(price);
 
-        System.out.println("Ingrese el nuevo stock:");
-        int stock = sc.nextInt();
-        sc.nextLine();
-        product.setStock(stock);
+            System.out.println("Ingrese el nuevo stock:");
+            int stock = sc.nextInt();
+            sc.nextLine();
+            
+            // Validar que el stock sea válido
+            EntityValidator.validateNonNegativeStock(stock);
+            product.setStock(stock);
 
-        boolean state = stateSelector.ProductState();
-        product.setState(state);
+            boolean state = stateSelector.ProductState();
+            product.setState(state);
 
-        return productRepository.updateProduct(product)
-                .orElse(null);
+            Product updatedProduct = productRepository.updateProduct(product)
+                    .orElseThrow(() -> new ValidationException("No se encontró el producto a actualizar"));
+            System.out.println("✓ Producto actualizado exitosamente");
+            return updatedProduct;
+            
+        } catch (ValidationException e) {
+            System.out.println("✗ Error de validación: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.out.println("✗ Error al actualizar el producto: " + e.getMessage());
+            throw new ValidationException("Error al actualizar el producto");
+        }
     }
 
     @Override
