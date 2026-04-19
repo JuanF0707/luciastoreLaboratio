@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AgentMigrationStateService">
+    <option name="pendingSessionIds">
+      <option value="80895b08-f034-4aa2-a6b3-7c25897b736c" />
+    </option>
+    <option name="pendingTurns">
+      <map>
+        <entry key="80895b08-f034-4aa2-a6b3-7c25897b736c">
+          <value>
+            <set>
+              <option value="ee902a34-847a-4d87-9afc-8932f48d6d0b" />
+              <option value="cf7a0bb9-5db4-49eb-918e-6dec5909d845" />
+              <option value="569f037e-575f-42fe-994f-9f57a19a78d6" />
+              <option value="f5864b4a-0e60-448c-a609-5a6e8868572d" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <pendingWorkingSetItems>
+      <entry key="80895b08-f034-4aa2-a6b3-7c25897b736c">
+        <set>
+          <option value="file://$PROJECT_DIR$/src/main/java/storeapp/exceptions/DuplicateEmailException.java" />
+          <option value="file://$PROJECT_DIR$/src/main/java/storeapp/exceptions/ValidationException.java" />
+        </set>
+      </entry>
+    </pendingWorkingSetItems>
+  </component>
+</project>
