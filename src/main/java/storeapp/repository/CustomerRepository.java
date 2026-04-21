@@ -32,7 +32,7 @@ public class CustomerRepository {
     }
 
 
-    public Optional<Customer> findCustomerById(int id){
+    public Customer findCustomerById(int id){
         System.out.println("repositorio" + id);
         try{
         for(Customer customer: customers){
@@ -40,13 +40,13 @@ public class CustomerRepository {
                 System.out.println(customer.getId() + " " + customer.getName() + " " + customer.getLastName() + " " + customer.getEmail() + " " + customer.getPassword() + " " + customer.isStatus() + " " + customer.getQuote() + " " + customer.getCustomerType());
             }
 
-            return Optional.of(customer);
+            return customer;
         }
 
-        return Optional.ofNullable(null);
+        return null;
         }catch (Exception e){
             System.out.println("Customer not found");
-            return Optional.ofNullable(null);
+            return null;
         }
     }
 
@@ -54,13 +54,27 @@ public class CustomerRepository {
 
     }
 
-    public void updateCustomer(){
+    public Customer updateCustomer(int id){
 
+        for(Customer customer: customers){
+            if(id == customer.getId()){
+                return customer;
+            }
+
+        }
+
+
+        return null;
     }
 
 
 
-    public void deleteCustomer(){
+    public void deleteCustomer(int id){
+        for(Customer customer: customers){
+            if(id == customer.getId()){
+                customers.remove(id);
+            }
+        }
 
     }
 

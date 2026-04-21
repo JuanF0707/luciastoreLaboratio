@@ -2,6 +2,7 @@ package storeapp.userinterface;
 
 import storeapp.domain.Customer;
 import storeapp.services.CustumerServiceImpl;
+import storeapp.utils.CustomerFormValidation;
 import storeapp.view.AdminView;
 import storeapp.view.CategoryView;
 import storeapp.view.CustomerView;
@@ -140,6 +141,7 @@ public class MenuApp {
                     break;
                 case 3:
                     System.out.println("Modificar mi perfil");
+                    customerView.updateCustumer();
                     break;
                 case 4:
                     System.out.println("Saliendo del Menu Cliente...");
@@ -174,14 +176,15 @@ public class MenuApp {
                     break;
                 case 3:
                     System.out.println("Modificar perfil");
+                    customerView.updateCustumer();
                     break;
                 case 4:
                     System.out.println("Ver perfiles");
                     adminView.getAllCustomers();
                     break;
                 case 5:
-                    System.out.println("Eliminar Perfil");
-                    adminView.deleteCustomer();
+                    System.out.println("Eliminar perfil");
+                    customerView.deleteCustomer();
                     break;
                 case 6:
                     System.out.println("Saliendo del menu de Clientes...");

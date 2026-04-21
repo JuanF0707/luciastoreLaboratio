@@ -4,7 +4,6 @@ import storeapp.domain.Customer;
 import storeapp.repository.CustomerRepository;
 import storeapp.utils.CustomerFormValidation;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -15,14 +14,15 @@ public class CustumerServiceImpl implements CustumerService {
     //Ahora vamos a comunicar las clases , para eso vamos a crear una instancia de la capa inmediatamente anterior
     private final CustomerRepository customerRepository;
 
-    public CustumerServiceImpl(Customer customer, CustomerRepository customerRepository) {
+    public CustumerServiceImpl( CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
 
     }
 
     @Override
-    public Customer createCustomer(Customer customer) {
+    public Customer createCustomer() {
 
+        Customer customer = new Customer();
 
         String prompt = "Ingrese el id del cliente";
         customer.setId(CustomerFormValidation.validateInt(prompt));
@@ -45,8 +45,8 @@ public class CustumerServiceImpl implements CustumerService {
         customer.setPassword(password);
 
         System.out.println("Estado Cliente ");
-        boolean state = sc.nextBoolean();
-        customer.setStatus(state);
+
+        customer.setStatus(CustomerStateSelector.selectCustomerState());
 
         System.out.println("Cupo");
         double quote = sc.nextDouble();
@@ -54,15 +54,13 @@ public class CustumerServiceImpl implements CustumerService {
         sc.nextLine();
 
         System.out.println("Tipo de Cliente");
-        String customerType = sc.nextLine();
-        customer.setCustomerType(customerType);
-
+        customer.setCustomerType(CustomerTypeSelector.selectTypeCustomer());
 
         return customerRepository.saveCustomer(customer);
     }
 
     @Override
-    public Optional<Customer> getCustomerById(int id) {
+    public Customer getCustomerById(int id) {
 
         return customerRepository.findCustomerById(id);
     }
@@ -74,16 +72,50 @@ public class CustumerServiceImpl implements CustumerService {
 
 
     @Override
-    public Customer updateCustomer(Customer customer) {
-        return null;
+    public Customer updateCustomer(int id) {
+
+        System.out.println("Estoy en el service");
+        Customer customer = customerRepository.findCustomerById(id);
+
+        if(customer.getId() == id){
+
+            System.out.println("Actualizar 1. id 2. Nombre 3 Apellido 4.Correo 5. Contraseña");
+            int option = CustomerFormValidation.validateInt("Opcion");
+
+            switch (option){
+                case 1:
+                    customer.setId(CustomerFormValidation.validateInt("Actualizar id"));
+                    break;
+                case 2:
+                    customer.setName(CustomerFormValidation.validateString("Actualzar nombre"));
+                    break;
+                case 3:
+                    customer.setLastName(CustomerFormValidation.validateString("Actualizar Apellido"));
+                    break;
+                case 4:
+                    customer.setEmail(CustomerFormValidation.validateString("Actualizar Email"));
+                    break;
+                case 5:
+                    customer.setPassword(CustomerFormValidation.validateString("Actualizar contraseña"));
+                default:
+                    System.out.println("Seleccione una opcion");
+                    break;
+            }
+
+            customerRepository.updateCustomer(id);
+        }else{
+            System.out.println("Cliente  no encontrado");
+        }
+
+
+
+        return customer;
     }
 
+    @Override
+    public void deleteCustomer(int id) {
 
-    //Validations
+        customerRepository.deleteCustomer(id);
 
-
-
-
-
-
+    }
 }
