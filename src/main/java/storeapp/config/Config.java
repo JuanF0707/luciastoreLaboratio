@@ -2,12 +2,12 @@ package storeapp.config;
 
 import storeapp.domain.Admin;
 import storeapp.domain.Customer;
-import storeapp.repository.CategoryRepository;
 import storeapp.repository.CustomerRepository;
-import storeapp.services.*;
+import storeapp.services.AdminServiceImpl;
+import storeapp.services.CustumerService;
+import storeapp.services.CustumerServiceImpl;
 import storeapp.userinterface.MenuApp;
 import storeapp.view.AdminView;
-import storeapp.view.CategoryView;
 import storeapp.view.CustomerView;
 
 public class Config {
@@ -27,12 +27,8 @@ public class Config {
         AdminServiceImpl adminService = new AdminServiceImpl(admin, customerRepository);
         AdminView adminView = new AdminView(adminService, admin);
 
-        // Agrego esto
-        CategoryRepository categoryRepository = new CategoryRepository();
-        CategoryService categoryService = new CategoryServicesImpl (categoryRepository);
-        CategoryView categoryView = new CategoryView(categoryService);
 
-        return new MenuApp(customerView, adminView, categoryView);
+        return new MenuApp(customerView, adminView);
 
     }
 
