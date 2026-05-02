@@ -1,8 +1,6 @@
 package storeapp.view;
 
-import storeapp.domain.Customer;
-import storeapp.services.CustumerService;
-import storeapp.services.CustumerServiceImpl;
+import storeapp.services.input.CustumerService;
 import storeapp.utils.CustomerFormValidation;
 
 public class CustomerView {

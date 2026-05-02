@@ -1,7 +1,8 @@
 package storeapp.services;
 
 import storeapp.domain.Customer;
-import storeapp.repository.CustomerRepository;
+import storeapp.services.input.CustumerService;
+import storeapp.services.outputport.CustomerPersistencePort;
 import storeapp.utils.CustomerFormValidation;
 
 import java.util.Optional;
@@ -12,9 +13,9 @@ public class CustumerServiceImpl implements CustumerService {
     Scanner sc = new Scanner(System.in);
 
     //Ahora vamos a comunicar las clases , para eso vamos a crear una instancia de la capa inmediatamente anterior
-    private final CustomerRepository customerRepository;
+    private final CustomerPersistencePort customerRepository;
 
-    public CustumerServiceImpl( CustomerRepository customerRepository) {
+    public CustumerServiceImpl( CustomerPersistencePort customerRepository) {
         this.customerRepository = customerRepository;
 
     }

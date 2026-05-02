@@ -1,7 +1,6 @@
-package storeapp.services;
+package storeapp.services.input;
 
 import storeapp.domain.Admin;
-import storeapp.domain.Customer;
 
 import java.util.List;
 import java.util.Optional;
