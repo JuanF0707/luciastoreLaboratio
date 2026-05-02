@@ -1,11 +1,11 @@
 package storeapp.config;
 
 import storeapp.domain.Admin;
-import storeapp.domain.Customer;
-import storeapp.repository.CustomerRepository;
+import storeapp.persistence.repository.CustomerRepository;
 import storeapp.services.AdminServiceImpl;
-import storeapp.services.CustumerService;
+import storeapp.services.input.CustumerService;
 import storeapp.services.CustumerServiceImpl;
+import storeapp.services.outputport.CustomerPersistencePort;
 import storeapp.userinterface.MenuApp;
 import storeapp.view.AdminView;
 import storeapp.view.CustomerView;
@@ -21,7 +21,7 @@ public class Config {
         //  y no tenemos que cambiar el codigo del main, esto es una buena practica de programacion, ya que nos permite tener un codigo mas limpio y mantenible.
 
         Admin admin = new Admin();
-        CustomerRepository customerRepository = new CustomerRepository();
+        CustomerPersistencePort customerRepository = new CustomerRepository();
         CustumerService customerService = new CustumerServiceImpl(customerRepository);
         CustomerView customerView = new CustomerView(customerService);
         AdminServiceImpl adminService = new AdminServiceImpl(admin, customerRepository);

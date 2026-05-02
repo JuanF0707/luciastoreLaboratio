@@ -1,13 +1,14 @@
-package storeapp.repository;
+package storeapp.persistence.repository;
 
 import storeapp.domain.Customer;
+import storeapp.services.outputport.CustomerPersistencePort;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerRepository {
+public class CustomerRepository implements CustomerPersistencePort {
 
     List<Customer> customers = new ArrayList<>(Arrays.asList(
             new Customer(  1, "John", "Doe", "jd@mail.com" , "1234567890", true , 1000000.00 , "NUEVO" ),
