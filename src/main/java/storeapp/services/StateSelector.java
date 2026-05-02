@@ -1,6 +1,6 @@
 package storeapp.services;
 
-import storeapp.utils.ProductState;
+import storeapp.domain.enums.ProductState;
 
 import java.util.Scanner;
 

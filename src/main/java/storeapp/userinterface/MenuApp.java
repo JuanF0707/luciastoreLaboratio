@@ -2,8 +2,8 @@ package storeapp.userinterface;
 
 import storeapp.domain.Customer;
 import storeapp.services.CustumerServiceImpl;
+import storeapp.utils.CustomerFormValidation;
 import storeapp.view.AdminView;
-import storeapp.view.CategoryView;
 import storeapp.view.CustomerView;
 import storeapp.view.ProductView;
 
@@ -15,18 +15,13 @@ public class MenuApp {
     Scanner sc = new Scanner(System.in);
     private final CustomerView customerView;
     private final AdminView adminView;
-    private final CategoryView categoryView;
-    private final ProductView productView;
 
-    public MenuApp(CustomerView customerView, AdminView adminView, CategoryView categoryView, ProductView productview) {
+    public MenuApp(CustomerView customerView, AdminView adminView) {
         this.customerView = customerView;
         this.adminView = adminView;
-        this.categoryView = categoryView;
-        this.productView = productview;
-
     }
 
-    public void showMainMenu() {
+    public void showMainMenu(){
 
         System.out.println("Bienvenido a la tienda online");
         System.out.println("Presione 1 para iniciar la aplicacion");
@@ -34,29 +29,24 @@ public class MenuApp {
         int init = sc.nextInt();
         sc.nextLine();
 
-        // Agrego while hasta que seleccione 1
-        while (init != 1){
-            System.out.println("Opción invalida. Presione 1 para iniciar.");
-            init = sc.nextInt();
-            sc.nextLine();
-        }
+        while(init != 0){
 
         while (init != 0) {
             System.out.println("Selecione" + "\n" + " 1. Registrar Usuario 2. Iniciar Sesion 3. Salir");
             int option = sc.nextInt();
             sc.nextLine();
 
-            switch (option) {
+            switch (option){
                 case 1:
                     System.out.println("Registrar Usuario");
                     System.out.println("1. Cliente 2. Administrador");
                     int userType = sc.nextInt();
                     sc.nextLine();
-                    if (userType == 1) {
+                    if (userType == 1){
                         customerView.createCustomer();
-                    } else if (userType == 2) {
+                    }else if(userType == 2){
                         adminView.createAdmin();
-                    } else {
+                    }else{
                         System.out.println("Opcion no valida, por favor seleccione una opcion valida");
                     }
 
@@ -66,7 +56,7 @@ public class MenuApp {
                     System.out.println("1. Administrador 2. Cliente");
                     int loginType = sc.nextInt();
                     sc.nextLine();
-                    if (loginType == 1) {
+                    if (loginType == 1){
                         profileSelector("admin");
                     } else if (loginType == 2) {
                         profileSelector("customer");
@@ -86,32 +76,31 @@ public class MenuApp {
     }
 
 
-    public void profileSelector(String profile) {
+    public void profileSelector(String profile){
 
-        if (profile.equals("admin")) {
+        if(profile.equals("admin")){
             showMenuAdmin();
-        } else if (profile.equals("customer")) {
+        }else if(profile.equals("customer")){
             showMenuCustomer();
         }
     }
 
 
-    public void showMenuAdmin() {
+    public void showMenuAdmin(){
 
-        while (true) {
+        while (true){
             System.out.println("Menu Administrador");
             System.out.println("1. Gestionar Productos 2. Gestionar Categorias 3. Gestionar Clientes 4. Salir");
             int option = sc.nextInt();
             sc.nextLine();
 
-            switch (option) {
+            switch (option){
                 case 1:
                     System.out.println("Gestionar Productos");
                     productMenuAdmin();
                     break;
                 case 2:
                     System.out.println("Gestionar Categorias");
-                    categoryMenuAdmin();
                     break;
                 case 3:
                     System.out.println("Gestionar Clientes");
@@ -167,7 +156,7 @@ public class MenuApp {
     }
 
 
-    public void showMenuCustomer() {
+    public void showMenuCustomer(){
 
         System.out.println("Menu Cliente");
         while (true) {
@@ -189,6 +178,7 @@ public class MenuApp {
                     break;
                 case 3:
                     System.out.println("Modificar mi perfil");
+                    customerView.updateCustumer();
                     break;
                 case 4:
                     System.out.println("Saliendo del Menu Cliente...");
@@ -201,7 +191,7 @@ public class MenuApp {
     }
 
 
-    public void customerMenuAdmin() {
+    public void customerMenuAdmin(){
 
         System.out.println("Menu Cliente");
         while (true) {
@@ -224,54 +214,21 @@ public class MenuApp {
                     break;
                 case 3:
                     System.out.println("Modificar perfil");
+                    customerView.updateCustumer();
                     break;
                 case 4:
                     System.out.println("Ver perfiles");
                     adminView.getAllCustomers();
                     break;
                 case 5:
-                    System.out.println("Eliminar Perfil");
-                    adminView.deleteCustomer();
+                    System.out.println("Eliminar perfil");
+                    customerView.deleteCustomer();
                     break;
                 case 6:
                     System.out.println("Saliendo del menu de Clientes...");
                     return;
                 default:
                     System.out.println("Opcion no valida, por favor seleccione una opcion valida");
-            }
-        }
-    }
-
-    public void categoryMenuAdmin() {
-
-        while (true) {
-            System.out.println("\n--- Menu Categorias ---");
-            System.out.println("1. Crear Categoria ");
-            System.out.println("2. Ver todas las categorias");
-            System.out.println("3. Buscar categoria por ID");
-            System.out.println("4. Modificar categoria");
-            System.out.println("5. Eliminar categoria");
-            System.out.println("6. Salir");
-
-            int option = sc.nextInt();
-            sc.nextLine();
-
-            switch (option) {
-                case 1:
-                    categoryView.createCategory();
-                case 2:
-                    categoryView.getAllCategories();
-                case 3:
-                    categoryView.getCategoryById();
-                case 4:
-                    categoryView.updateCategory();
-                case 5:
-                    categoryView.deleteCategory();
-                case 6:
-                    System.out.println("Saliendo del Menú Categorias...");
-                    return;
-                default:
-                    System.out.println("Opción invalida");
             }
         }
     }

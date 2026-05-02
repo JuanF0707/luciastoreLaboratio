@@ -1,4 +1,4 @@
-package storeapp.services;
+package storeapp.services.input;
 
 import storeapp.domain.Customer;
 

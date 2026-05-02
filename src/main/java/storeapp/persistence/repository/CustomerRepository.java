@@ -1,12 +1,14 @@
-package storeapp.repository;
+package storeapp.persistence.repository;
 
 import storeapp.domain.Customer;
+import storeapp.services.outputport.CustomerPersistencePort;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerRepository {
+public class CustomerRepository implements CustomerPersistencePort {
 
     List<Customer> customers = new ArrayList<>(Arrays.asList(
             new Customer(  1, "John", "Doe", "jd@mail.com" , "1234567890", true , 1000000.00 , "NUEVO" ),
@@ -32,7 +34,7 @@ public class CustomerRepository {
     }
 
 
-    public Optional<Customer> findCustomerById(int id){
+    public Customer findCustomerById(int id){
         System.out.println("repositorio" + id);
         try{
         for(Customer customer: customers){
@@ -40,13 +42,13 @@ public class CustomerRepository {
                 System.out.println(customer.getId() + " " + customer.getName() + " " + customer.getLastName() + " " + customer.getEmail() + " " + customer.getPassword() + " " + customer.isStatus() + " " + customer.getQuote() + " " + customer.getCustomerType());
             }
 
-            return Optional.of(customer);
+            return customer;
         }
 
-        return Optional.ofNullable(null);
+        return null;
         }catch (Exception e){
             System.out.println("Customer not found");
-            return Optional.ofNullable(null);
+            return null;
         }
     }
 
@@ -54,13 +56,27 @@ public class CustomerRepository {
 
     }
 
-    public void updateCustomer(){
+    public Customer updateCustomer(int id){
 
+        for(Customer customer: customers){
+            if(id == customer.getId()){
+                return customer;
+            }
+
+        }
+
+
+        return null;
     }
 
 
 
-    public void deleteCustomer(){
+    public void deleteCustomer(int id){
+        for(Customer customer: customers){
+            if(id == customer.getId()){
+                customers.remove(id);
+            }
+        }
 
     }
 

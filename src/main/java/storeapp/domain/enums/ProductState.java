@@ -1,4 +1,4 @@
-package storeapp.utils;
+package storeapp.domain.enums;
 
 public enum ProductState {
 

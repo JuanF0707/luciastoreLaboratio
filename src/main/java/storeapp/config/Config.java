@@ -1,14 +1,13 @@
 package storeapp.config;
 
 import storeapp.domain.Admin;
-import storeapp.domain.Customer;
-import storeapp.repository.CategoryRepository;
-import storeapp.repository.CustomerRepository;
-import storeapp.repository.ProductRepository;
-import storeapp.services.*;
+import storeapp.persistence.repository.CustomerRepository;
+import storeapp.services.AdminServiceImpl;
+import storeapp.services.input.CustumerService;
+import storeapp.services.CustumerServiceImpl;
+import storeapp.services.outputport.CustomerPersistencePort;
 import storeapp.userinterface.MenuApp;
 import storeapp.view.AdminView;
-import storeapp.view.CategoryView;
 import storeapp.view.CustomerView;
 import storeapp.view.ProductView;
 
@@ -21,30 +20,16 @@ public class Config {
         // todo el codigo de creacion de objetos en un solo lugar, y asi poder cambiar la implementacion de los objetos sin tener que cambiar el codigo del main,
         //  por ejemplo si queremos cambiar la implementacion de CustomerServiceImpl por otra implementacion, solo tenemos que cambiar el codigo de esta clase,
         //  y no tenemos que cambiar el codigo del main, esto es una buena practica de programacion, ya que nos permite tener un codigo mas limpio y mantenible.
-        Customer customer = new Customer();
+
         Admin admin = new Admin();
-        CustomerRepository customerRepository = new CustomerRepository();
-        CustumerService customerService = new CustumerServiceImpl(customer, customerRepository);
-        CustomerView customerView = new CustomerView(customerService, customer);
+        CustomerPersistencePort customerRepository = new CustomerRepository();
+        CustumerService customerService = new CustumerServiceImpl(customerRepository);
+        CustomerView customerView = new CustomerView(customerService);
         AdminServiceImpl adminService = new AdminServiceImpl(admin, customerRepository);
         AdminView adminView = new AdminView(adminService, admin);
 
-        // Agrego esto
-        CategoryRepository categoryRepository = new CategoryRepository();
-        CategoryService categoryService = new CategoryServicesImpl(categoryRepository);
-        CategoryView categoryView = new CategoryView(categoryService);
 
-        // Agrego Productos
-        ProductRepository productRepository = new ProductRepository();
-        ProductService productService = new ProductServiceImpl(productRepository, categoryRepository);
-        ProductView productView = new ProductView(productService);
-
-        return new MenuApp(customerView, adminView, categoryView, productView);
-
-
-
-
-
+        return new MenuApp(customerView, adminView);
 
     }
 

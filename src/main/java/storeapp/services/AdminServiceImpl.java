@@ -2,16 +2,18 @@ package storeapp.services;
 
 import storeapp.domain.Admin;
 import storeapp.domain.Customer;
-import storeapp.repository.CustomerRepository;
+import storeapp.services.input.AdminService;
+import storeapp.services.input.CustumerAdminService;
+import storeapp.services.outputport.CustomerPersistencePort;
 
 import java.util.List;
 import java.util.Optional;
 
-public class AdminServiceImpl  implements AdminService , CustumerAdminService {
+public class AdminServiceImpl  implements AdminService, CustumerAdminService {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerPersistencePort customerRepository;
 
-    public AdminServiceImpl(Admin admin, CustomerRepository customerRepository) {
+    public AdminServiceImpl(Admin admin, CustomerPersistencePort customerRepository) {
         this.customerRepository = customerRepository;
     }
 
